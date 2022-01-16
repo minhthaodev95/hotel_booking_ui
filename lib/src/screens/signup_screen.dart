@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_learning_huweii/src/widgets/custom_clippath.dart';
 
-import 'login_screen.dart';
-
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
   @override

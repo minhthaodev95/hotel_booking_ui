@@ -37,8 +37,14 @@ dependencies:
   flutter_svg: ^1.0.0
   syncfusion_flutter_datepicker: ^19.4.40
   intl: ^0.17.0
+  hive: ^2.0.5
+  hive_flutter: ^1.1.0
+  path_provider: ^2.0.8
+  numberpicker: ^2.1.1
+  flutter_rating_bar: ^4.0.0
 
 dev_dependencies:
+  hive_generator: ^1.1.2  
   flutter_test:
     sdk: flutter
 
@@ -48,6 +54,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  build_runner: ^2.1.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -64,6 +71,9 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/images/image_feature/
+    - assets/images/list_image_hotel/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

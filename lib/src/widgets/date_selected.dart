@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:online_learning_huweii/src/models/info_hotel_searching.dart';
 import 'package:online_learning_huweii/src/widgets/custom_clippath.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
@@ -14,35 +16,36 @@ class _DateSelectedState extends State<DateSelected> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Color(0xff323643).withOpacity(0.05),
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(Icons.arrow_back_ios, color: Colors.black)),
-        ),
-        body: Stack(
-          children: [
-            ClipPath(
-                clipper: CustomClipPath(),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xff323643).withOpacity(0.05),
-                  ),
-                )),
-            Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                  child: ContentColumn(),
-                ))
-          ],
-        ));
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Color(0xff323643).withOpacity(0.05),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_back_ios, color: Colors.black)),
+      ),
+      body: Stack(
+        children: [
+          ClipPath(
+              clipper: CustomClipPath(),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xff323643).withOpacity(0.05),
+                ),
+              )),
+          Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                child: ContentColumn(),
+              ))
+        ],
+      ),
+    );
   }
 }
 
@@ -84,12 +87,27 @@ class _ContentColumnState extends State<ContentColumn> {
   DateTime arrivalDate = DateTime.now().subtract(const Duration(days: 1));
   DateTime departureDate = DateTime.now().add(const Duration(days: 1));
 
+  final box = Hive.box('infoBox');
+  InfoHotelSearching infoSearching = InfoHotelSearching();
+  @override
   @override
   void initState() {
-    _arrivalDateController.text = DateFormat('MMM dd,yyyy')
-        .format(DateTime.now().subtract(const Duration(days: 1)));
-    _departureDateController.text = DateFormat('MMM dd,yyyy')
-        .format(DateTime.now().add(const Duration(days: 1)));
+    infoSearching = box.getAt(0);
+
+    if (infoSearching.arrivalDate != null ||
+        infoSearching.departureDate != null) {
+      arrivalDate = infoSearching.arrivalDate!;
+      departureDate = infoSearching.departureDate!;
+      _arrivalDateController.text =
+          DateFormat('MMM dd,yyyy').format(arrivalDate);
+      _departureDateController.text =
+          DateFormat('MMM dd,yyyy').format(departureDate);
+    } else {
+      _arrivalDateController.text = DateFormat('MMM dd,yyyy')
+          .format(DateTime.now().subtract(const Duration(days: 1)));
+      _departureDateController.text = DateFormat('MMM dd,yyyy')
+          .format(DateTime.now().add(const Duration(days: 1)));
+    }
 
     super.initState();
   }
@@ -156,15 +174,16 @@ class _ContentColumnState extends State<ContentColumn> {
               onSelectionChanged: _onSelectionChanged,
               selectionMode: DateRangePickerSelectionMode.range,
               initialSelectedRange: PickerDateRange(
-                  DateTime.now().subtract(const Duration(days: 1)),
-                  DateTime.now().add(const Duration(days: 1))),
+                arrivalDate,
+                departureDate,
+              ),
             ),
           ),
         ),
         const SizedBox(height: 20),
         Expanded(child: Container()),
         Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
+          padding: const EdgeInsets.only(bottom: 40.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 10,
@@ -175,10 +194,10 @@ class _ContentColumnState extends State<ContentColumn> {
                   46), // double.infinity is the width and 30 is the height
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/home', arguments: {
-                'arrivalDate': arrivalDate,
-                'departureDate': departureDate,
-              });
+              infoSearching.arrivalDate = arrivalDate;
+              infoSearching.departureDate = departureDate;
+              box.putAt(0, infoSearching);
+              Navigator.pushNamed(context, '/home');
             },
             child: const Text('Apply'),
           ),

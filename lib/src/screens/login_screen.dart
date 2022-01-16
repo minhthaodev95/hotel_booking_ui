@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_learning_huweii/src/signup_screen.dart';
+import 'package:online_learning_huweii/src/screens/signup_screen.dart';
 import 'package:online_learning_huweii/src/widgets/custom_clippath.dart';
 
 class LoginScreen extends StatefulWidget {

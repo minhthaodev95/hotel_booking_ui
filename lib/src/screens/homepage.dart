@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:online_learning_huweii/src/models/info_hotel_searching.dart';
 import 'package:online_learning_huweii/src/widgets/custom_clippath.dart';
 import 'package:online_learning_huweii/src/widgets/date_selected.dart';
 import 'package:online_learning_huweii/src/widgets/location_selected.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:online_learning_huweii/src/widgets/numbers_guest_selected.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   HomePage(
       {this.location,
@@ -27,13 +32,24 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // input decoration
 
+  // final box = Hive.box('infoBox');
+  // final infoSearching2 = InfoHotelSearching(
+  //   location: 'Barcelona/Spain',
+  //   arrivalDate: DateTime.now(),
+  //   departureDate: DateTime.now().add(const Duration(hours: 1)),
+  // );
+  // InfoHotelSearching infoSearching = InfoHotelSearching();
+
   @override
   void initState() {
+    // box.add(infoSearching);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // print('info:  ${box.getAt(0).location}');
+
     return Scaffold(
         body: Stack(
       children: [
@@ -54,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             bottom: 0,
             child: Container(
               padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-              child: FormHome(),
+              child: const FormHome(),
             ))
       ],
     ));
@@ -62,7 +78,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class FormHome extends StatefulWidget {
-  FormHome({
+  const FormHome({
     Key? key,
   }) : super(key: key);
 
@@ -105,13 +121,37 @@ class _FormHomeState extends State<FormHome> {
 
   final _numOfGuestController = TextEditingController();
 
-  void locationFunc(newLocation) {
-    _locationController.text = newLocation;
+  // get box in hive db
+  final box = Hive.box('infoBox');
+
+  @override
+  void initState() {
+    //if value in hivedb != null >> change values in form
+
+    if (box.getAt(0).location != null) {
+      _locationController.text = box.getAt(0).location;
+    }
+    if (box.getAt(0).arrivalDate != null) {
+      _arrivalDateController.text =
+          DateFormat('MMM dd,yyyy').format(box.getAt(0).arrivalDate);
+    }
+    if (box.getAt(0).departureDate != null) {
+      _departureDateController.text =
+          DateFormat('MMM dd,yyyy').format(box.getAt(0).departureDate);
+    }
+    if (box.getAt(0).guests != null) {
+      _numOfGuestController.text =
+          '${box.getAt(0).guests[0]} Adults, ${box.getAt(0).guests[1]} Childrens';
+    }
+    // if (box.getAt(0).location != null) {
+    //   _locationController.text = box.getAt(0).location;
+    // }
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(_locationController.text.toString());
+    // print(box.getAt(0).arrivalDate.toString());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -132,10 +172,7 @@ class _FormHomeState extends State<FormHome> {
           readOnly: true,
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) =>
-                        LocationSelected(locationFunc: locationFunc)));
+                context, MaterialPageRoute(builder: (_) => LocationSelected()));
           },
           style: style2,
           controller: _locationController,
@@ -186,8 +223,11 @@ class _FormHomeState extends State<FormHome> {
         const SizedBox(height: 20),
         Text('Number of Guests', style: style1),
         TextFormField(
-          onTap: () {},
-          obscureText: true,
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => NumbersGuestSelected()));
+          },
+          readOnly: true,
           style: style2,
           controller: _numOfGuestController,
           decoration: _inputDecoration,
@@ -202,7 +242,9 @@ class _FormHomeState extends State<FormHome> {
             minimumSize: const Size(double.infinity,
                 46), // double.infinity is the width and 30 is the height
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/hotel_listing');
+          },
           child: const Text('Search'),
         ),
       ],

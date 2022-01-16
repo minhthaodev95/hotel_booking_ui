@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_learning_huweii/src/sample_data/page_content.dart';
 
-import 'configs/theme/app_theme.dart';
+import '../configs/theme/app_theme.dart';
 
 class WalkThrough extends StatefulWidget {
   const WalkThrough({Key? key}) : super(key: key);
