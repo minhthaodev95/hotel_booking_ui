@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_learning_huweii/src/widgets/custom_clippath.dart';
+import 'package:hotel_booking/src/widgets/custom_clippath.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatefulWidget {

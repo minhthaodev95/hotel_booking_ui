@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:online_learning_huweii/src/screens/homepage.dart';
-import 'package:online_learning_huweii/src/screens/hotels_listing.dart';
-import 'package:online_learning_huweii/src/screens/login_screen.dart';
-import 'package:online_learning_huweii/src/screens/splash_screen.dart';
-import 'package:online_learning_huweii/src/screens/walk_thourgh.dart';
+import 'package:hotel_booking/src/screens/homepage.dart';
+import 'package:hotel_booking/src/screens/hotels_listing.dart';
+import 'package:hotel_booking/src/screens/login_screen.dart';
+import 'package:hotel_booking/src/screens/walk_thourgh.dart';
 
 import '../../screens/signup_screen.dart';
 
@@ -11,7 +10,7 @@ class AppRoutes {
   static Route? onGenarateRoutes(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        return _materialRoute(const SplashScreen());
+        return _materialRoute(HomePage());
       case '/home':
         return _materialRoute(HomePage());
       case '/login':

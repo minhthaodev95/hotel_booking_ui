@@ -1,4 +1,4 @@
-import 'package:online_learning_huweii/src/models/hotel_model.dart';
+import 'package:hotel_booking/src/models/hotel_model.dart';
 
 List<HotelModel> listHotels = <HotelModel>[
   HotelModel(

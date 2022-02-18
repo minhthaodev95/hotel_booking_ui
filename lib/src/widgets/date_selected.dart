@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:online_learning_huweii/src/models/info_hotel_searching.dart';
-import 'package:online_learning_huweii/src/widgets/custom_clippath.dart';
+import 'package:hotel_booking/src/models/info_hotel_searching.dart';
+import 'package:hotel_booking/src/widgets/custom_clippath.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
 
@@ -92,21 +92,23 @@ class _ContentColumnState extends State<ContentColumn> {
   @override
   @override
   void initState() {
-    infoSearching = box.getAt(0);
+    if (box.isNotEmpty) {
+      infoSearching = box.getAt(0);
 
-    if (infoSearching.arrivalDate != null ||
-        infoSearching.departureDate != null) {
-      arrivalDate = infoSearching.arrivalDate!;
-      departureDate = infoSearching.departureDate!;
-      _arrivalDateController.text =
-          DateFormat('MMM dd,yyyy').format(arrivalDate);
-      _departureDateController.text =
-          DateFormat('MMM dd,yyyy').format(departureDate);
-    } else {
-      _arrivalDateController.text = DateFormat('MMM dd,yyyy')
-          .format(DateTime.now().subtract(const Duration(days: 1)));
-      _departureDateController.text = DateFormat('MMM dd,yyyy')
-          .format(DateTime.now().add(const Duration(days: 1)));
+      if (infoSearching.arrivalDate != null ||
+          infoSearching.departureDate != null) {
+        arrivalDate = infoSearching.arrivalDate!;
+        departureDate = infoSearching.departureDate!;
+        _arrivalDateController.text =
+            DateFormat('MMM dd,yyyy').format(arrivalDate);
+        _departureDateController.text =
+            DateFormat('MMM dd,yyyy').format(departureDate);
+      } else {
+        _arrivalDateController.text = DateFormat('MMM dd,yyyy')
+            .format(DateTime.now().subtract(const Duration(days: 1)));
+        _departureDateController.text = DateFormat('MMM dd,yyyy')
+            .format(DateTime.now().add(const Duration(days: 1)));
+      }
     }
 
     super.initState();
@@ -196,7 +198,7 @@ class _ContentColumnState extends State<ContentColumn> {
             onPressed: () {
               infoSearching.arrivalDate = arrivalDate;
               infoSearching.departureDate = departureDate;
-              box.putAt(0, infoSearching);
+              box.put(0, infoSearching);
               Navigator.pushNamed(context, '/home');
             },
             child: const Text('Apply'),

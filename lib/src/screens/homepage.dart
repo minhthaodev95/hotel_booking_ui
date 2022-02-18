@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:online_learning_huweii/src/models/info_hotel_searching.dart';
-import 'package:online_learning_huweii/src/widgets/custom_clippath.dart';
-import 'package:online_learning_huweii/src/widgets/date_selected.dart';
-import 'package:online_learning_huweii/src/widgets/location_selected.dart';
+import 'package:hotel_booking/src/models/info_hotel_searching.dart';
+import 'package:hotel_booking/src/widgets/custom_clippath.dart';
+import 'package:hotel_booking/src/widgets/date_selected.dart';
+import 'package:hotel_booking/src/widgets/location_selected.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:online_learning_huweii/src/widgets/numbers_guest_selected.dart';
+import 'package:hotel_booking/src/widgets/numbers_guest_selected.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -127,22 +127,24 @@ class _FormHomeState extends State<FormHome> {
   @override
   void initState() {
     //if value in hivedb != null >> change values in form
+    if (box.isNotEmpty) {
+      if (box.getAt(0).location != null) {
+        _locationController.text = box.getAt(0).location;
+      }
+      if (box.getAt(0).arrivalDate != null) {
+        _arrivalDateController.text =
+            DateFormat('MMM dd,yyyy').format(box.getAt(0).arrivalDate);
+      }
+      if (box.getAt(0).departureDate != null) {
+        _departureDateController.text =
+            DateFormat('MMM dd,yyyy').format(box.getAt(0).departureDate);
+      }
+      if (box.getAt(0).guests != null) {
+        _numOfGuestController.text =
+            '${box.getAt(0).guests[0]} Adults, ${box.getAt(0).guests[1]} Childrens';
+      }
+    }
 
-    if (box.getAt(0).location != null) {
-      _locationController.text = box.getAt(0).location;
-    }
-    if (box.getAt(0).arrivalDate != null) {
-      _arrivalDateController.text =
-          DateFormat('MMM dd,yyyy').format(box.getAt(0).arrivalDate);
-    }
-    if (box.getAt(0).departureDate != null) {
-      _departureDateController.text =
-          DateFormat('MMM dd,yyyy').format(box.getAt(0).departureDate);
-    }
-    if (box.getAt(0).guests != null) {
-      _numOfGuestController.text =
-          '${box.getAt(0).guests[0]} Adults, ${box.getAt(0).guests[1]} Childrens';
-    }
     // if (box.getAt(0).location != null) {
     //   _locationController.text = box.getAt(0).location;
     // }

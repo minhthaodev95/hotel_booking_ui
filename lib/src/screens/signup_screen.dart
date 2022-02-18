@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:online_learning_huweii/src/widgets/custom_clippath.dart';
+import 'package:hotel_booking/src/widgets/custom_clippath.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);

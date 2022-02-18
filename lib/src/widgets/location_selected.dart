@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:online_learning_huweii/src/models/info_hotel_searching.dart';
-import 'package:online_learning_huweii/src/sample_data/list_city.dart';
+import 'package:hotel_booking/src/models/info_hotel_searching.dart';
+import 'package:hotel_booking/src/sample_data/list_city.dart';
 
 import 'custom_clippath.dart';
 
@@ -17,7 +17,10 @@ class _LocationSelectedState extends State<LocationSelected> {
   InfoHotelSearching infoSearching = InfoHotelSearching();
   @override
   initState() {
-    infoSearching = box.getAt(0);
+    if (box.isNotEmpty) {
+      infoSearching = box.getAt(0);
+    }
+    super.initState();
   }
 
   @override
@@ -114,7 +117,7 @@ class _LocationSelectedState extends State<LocationSelected> {
         return GestureDetector(
           onTap: () {
             infoSearching.location = bigCitys[index].name;
-            box.putAt(0, infoSearching);
+            box.put(0, infoSearching);
             Navigator.pushNamed(context, '/home');
           },
           child: (infoSearching.location == bigCitys[index].name)

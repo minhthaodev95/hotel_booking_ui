@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:online_learning_huweii/src/models/info_hotel_searching.dart';
-import 'package:online_learning_huweii/src/sample_data/list_hotels.dart';
-import 'package:online_learning_huweii/src/widgets/custom_clippath.dart';
+import 'package:hotel_booking/src/models/info_hotel_searching.dart';
+import 'package:hotel_booking/src/sample_data/list_hotels.dart';
+import 'package:hotel_booking/src/widgets/custom_clippath.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:online_learning_huweii/src/widgets/modal_bottom_sheet.dart';
+import 'package:hotel_booking/src/widgets/modal_bottom_sheet.dart';
 
 import 'hotel_details.dart';
 import 'hotel_searching.dart';
@@ -25,7 +25,9 @@ class _HotelsListingState extends State<HotelsListing> {
         elevation: 0,
         backgroundColor: const Color(0xff323643).withOpacity(0.05),
         leading: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+          },
           child: Container(
             margin: const EdgeInsets.only(left: 15.0),
             padding: const EdgeInsets.all(8.0),
@@ -79,6 +81,8 @@ class _HotelsListingState extends State<HotelsListing> {
 }
 
 class ListHotels extends StatefulWidget {
+  const ListHotels({Key? key}) : super(key: key);
+
   @override
   State<ListHotels> createState() => _ListHotelsState();
 }
@@ -90,8 +94,10 @@ class _ListHotelsState extends State<ListHotels> {
 
   @override
   void initState() {
-    infoSearching = box.getAt(0);
-    totalGuests = infoSearching.guests![0] + infoSearching.guests![1];
+    if (box.isNotEmpty) {
+      infoSearching = box.getAt(0);
+      totalGuests = infoSearching.guests![0] + infoSearching.guests![1];
+    }
     super.initState();
   }
 
